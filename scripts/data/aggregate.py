@@ -7,12 +7,16 @@
   - word_freq_by_party.csv      (政党別頻出語トップ30)
   - word_freq_by_year.csv       (年別頻出語トップ30)
 """
+import sys
 from pathlib import Path
 
 import pandas as pd
+
+# count_words.py は scripts/analysis/ にあるため、パスを追加
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "analysis"))
 from count_words import STOPWORDS
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 INTERIM_DIR = BASE_DIR / "data" / "interim"
 EXTRACTED = INTERIM_DIR / "speeches_extracted.csv"
 TOKENS = INTERIM_DIR / "tokens.csv"

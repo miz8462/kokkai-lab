@@ -11,10 +11,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # --- 日本語フォント設定 ---
-# 環境に合わせて変更してください
-# macOS: "Hiragino Sans"
-# Windows: "Yu Gothic" or "MS Gothic"
-# Linux: "IPAexGothic" (別途インストールが必要な場合あり)
 plt.rcParams["font.family"] = "Noto Sans CJK JP"
 
 # --- ① データ読み込み ---
