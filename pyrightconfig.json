@@ -1,4 +1,8 @@
 {
-  "extraPaths": ["scripts/analysis"],
-  "typeCheckingMode": "basic"
+  "extraPaths": [
+    "scripts/analysis"
+  ],
+  "typeCheckingMode": "basic",
+  "venvPath": ".",
+  "venv": "venv"
 }
