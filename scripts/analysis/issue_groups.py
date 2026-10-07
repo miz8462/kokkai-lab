@@ -12,14 +12,14 @@
 # 【使い方】
 # python scripts/analysis/issue_groups.py
 #
-# 【入力】 data/interim/paragraphs_roles.csv, data/issues/issue_groups.json
+# 【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
 # 【出力】 output/issue_groups.csv(画面にも表示)
 
 import json
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs_roles.csv"
+INPUT = "data/interim/paragraphs_clean.csv"
 GROUPS = "data/issues/issue_groups.json"
 OUTPUT = "output/issue_groups.csv"
 TEXT_COL = "text"
@@ -31,7 +31,9 @@ with open(GROUPS, encoding="utf-8") as f:
     groups = json.load(f)
 
 df = pd.read_csv(INPUT)
-df = df[df[TEXT_COL].str.contains(KEYWORD, na=False) & (df["role"] != "委員長報告")].copy()
+df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
+df["kw_extended"] = df["kw_extended"].astype(str).str.lower().isin(["true", "1"])
+df = df[df["kw_extended"] & (df["role"] != "委員長報告") & (~df["exclude"])].copy()
 
 rows = []
 for name, words in groups.items():
@@ -53,5 +55,5 @@ for name, words in groups.items():
 
 res = pd.DataFrame(rows)
 res.to_csv(OUTPUT, index=False)
-print(f"対象: 消費税を含む段落(委員長報告を除く) {len(df)}件")
+print(f"対象: 消費税・消費減税・給付つき税額控除を含む段落(委員長報告・除外分を除く) {len(df)}件")
 print(res.to_string(index=False))

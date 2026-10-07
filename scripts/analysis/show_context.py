@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 
 # --- ここだけ自分のCSVに合わせて直す ---
-INPUT = "data/interim/paragraphs.csv"
+INPUT = "data/interim/paragraphs_clean.csv"
 TEXT_COL = "text"
 SPEECH_COL = "speechID"
 PARA_COL = "para_id"
@@ -16,6 +16,10 @@ term = sys.argv[1]
 window = int(sys.argv[2]) if len(sys.argv) > 2 else 1
 
 df = pd.read_csv(INPUT)
+if "exclude" in df.columns:
+    df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
+else:
+    df["exclude"] = False
 print(f"列名: {list(df.columns)}")
 
 missing = [c for c in (TEXT_COL, SPEECH_COL, PARA_COL) if c not in df.columns]
@@ -39,7 +43,8 @@ lines = [f"# 「{term}」を含む段落: {len(hits)}件\n"]
 for i in hits:
     r = df.loc[i]
     kw = "消費税あり" if str(r["has_keyword"]) == "True" else "消費税なし"
-    lines.append(f"## {r[PARTY_COL]} / {r['role']} / {kw} / {r[SPEECH_COL]}-{r[PARA_COL]}\n")
+    ex = " / 除外" if r["exclude"] else ""
+    lines.append(f"## {r[PARTY_COL]} / {r['role']} / {kw}{ex} / {r[SPEECH_COL]}-{r[PARA_COL]}\n")
     for j in range(i - window, i + window + 1):
         if j < 0 or j >= len(df) or df.loc[j, SPEECH_COL] != r[SPEECH_COL]:
             continue

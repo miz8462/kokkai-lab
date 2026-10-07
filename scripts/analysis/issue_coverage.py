@@ -11,14 +11,14 @@
 # 【使い方】
 # python scripts/analysis/issue_coverage.py
 #
-# 【入力】 data/interim/paragraphs_roles.csv, data/issues/issue_groups.json
+# 【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
 # 【出力】 output/uncovered.md(未分類の段落一覧)、画面に語別の件数と網羅率
 
 import json
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs_roles.csv"
+INPUT = "data/interim/paragraphs_clean.csv"
 GROUPS = "data/issues/issue_groups.json"
 OUTPUT = "output/uncovered.md"
 TEXT_COL = "text"
@@ -29,7 +29,9 @@ with open(GROUPS, encoding="utf-8") as f:
     groups = json.load(f)
 
 df = pd.read_csv(INPUT)
-df = df[df[TEXT_COL].str.contains(KEYWORD, na=False) & (df["role"] != "委員長報告")].copy()
+df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
+df["kw_extended"] = df["kw_extended"].astype(str).str.lower().isin(["true", "1"])
+df = df[df["kw_extended"] & (df["role"] != "委員長報告") & (~df["exclude"])].copy()
 
 print("【語ごとの該当段落数】")
 all_words = []

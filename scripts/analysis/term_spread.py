@@ -11,14 +11,14 @@
 # 【使い方】
 # python scripts/analysis/term_spread.py 滞納 倒産 担税力
 #
-# 【入力】 data/interim/paragraphs_roles.csv(scripts/data/mark_roles.py の出力)
+# 【入力】 data/interim/paragraphs_clean.csv(scripts/data/mark_roles.py の出力)
 # 【出力】 output/term_spread.csv(画面にも同じ表を表示)
 
 import sys
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs_roles.csv"
+INPUT = "data/interim/paragraphs_clean.csv"
 TEXT_COL = "text"
 SPEECH_COL = "speechID"
 SPEAKER_COL = "speaker"
@@ -31,7 +31,9 @@ if not terms:
     raise SystemExit("語を引数で渡してください。例: python scripts/analysis/term_spread.py 滞納 倒産")
 
 df = pd.read_csv(INPUT)
-df = df[df[TEXT_COL].str.contains(KEYWORD, na=False) & (df["role"] != "委員長報告")].copy()
+df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
+df["kw_extended"] = df["kw_extended"].astype(str).str.lower().isin(["true", "1"])
+df = df[df["kw_extended"] & (df["role"] != "委員長報告") & (~df["exclude"])].copy()
 
 rows = []
 for t in terms:
