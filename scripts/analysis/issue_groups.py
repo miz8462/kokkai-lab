@@ -1,19 +1,19 @@
-# scripts/analysis/issue_groups.py
-#
-# 【目的】
-# data/issues/issue_groups.json で定義した論点グループごとに、
-# 「消費税」を含む段落(委員長報告を除く)での広がりを集計する。
-# グループのいずれかの語を含む段落を、そのグループの段落とみなす。
-# 出すもの: 段落数、議員段落/政府段落、議員の発言者数、議員の最多発言者と割合、
-#           政党別の発言者数(段落数ではなく人数)。
-# 記事のチャートの元データになる。語の組み分けは自分で決めた定義なので、
-# 記事では語群をそのまま明示する。
-#
-# 【使い方】
-# python scripts/analysis/issue_groups.py
-#
-# 【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
-# 【出力】 output/issue_groups.csv(画面にも表示)
+"""
+【目的】
+data/issues/issue_groups.json で定義した論点グループごとに、
+「消費税」を含む段落(委員長報告を除く)での広がりを集計する。
+グループのいずれかの語を含む段落を、そのグループの段落とみなす。
+出すもの: 段落数、議員段落/政府段落、議員の発言者数、議員の最多発言者と割合、
+         政党別の発言者数(段落数ではなく人数)。
+記事のチャートの元データになる。語の組み分けは自分で決めた定義なので、
+記事では語群をそのまま明示する。
+
+【使い方】
+python scripts/analysis/issue_groups.py
+
+【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
+【出力】 output/issue_groups.csv(画面にも表示)
+"""
 
 import json
 
