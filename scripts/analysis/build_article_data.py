@@ -1,18 +1,17 @@
-# scripts/analysis/build_article_data.py
-#
-# 【目的】
-# 論点別の「議員の発言者数」と「政府の応答回数(答弁ブロック数)」を1つにまとめ、
-# 記事のチャート(Nivo)に渡すJSONを作る。
-# 議員と政府は単位が違う(人数と回数)ので、混ぜずに別のキーで持つ。
-# 発言者が少ない論点は minor=true として、別枠表示用に印をつける。
-# 政党別の発言者数も同梱する(議員のみ)。
-#
-# 【使い方】
-# python scripts/analysis/build_article_data.py
-# (先に issue_groups.py と answer_blocks.py を実行しておくこと)
-#
-# 【入力】 output/issue_groups.csv, output/answer_blocks_summary.csv
-# 【出力】 data/article/issue_data.json
+"""
+【目的】
+論点別の「議員の発言者数」と「政府の応答回数(答弁ブロック数)」を1つにまとめ、
+記事のチャート(Nivo)に渡すJSONを作る。
+議員と政府は単位が違う(人数と回数)ので、混ぜずに別のキーで持つ。
+政党別の発言者数も同梱する(議員のみ)。
+
+【使い方】
+python scripts/analysis/build_article_data.py
+(先に issue_groups.py と answer_blocks.py を実行しておくこと)
+
+【入力】 output/issue_groups.csv, output/answer_blocks_summary.csv
+【出力】 data/article/issue_data.json
+"""
 
 import json
 import re
@@ -23,7 +22,6 @@ import pandas as pd
 ISSUES = "output/issue_groups.csv"
 BLOCKS = "output/answer_blocks_summary.csv"
 OUT = Path("data/article/issue_data.json")
-MINOR_MAX_SPEAKERS = 5  # この人数以下の論点は別枠(暫定)
 
 issues = pd.read_csv(ISSUES)
 blocks = pd.read_csv(BLOCKS).set_index("論点")
@@ -50,7 +48,6 @@ for _, r in issues.iterrows():
             "responses": int(b["答弁ブロック"]) if b is not None else 0,
             "paragraphs": int(r["政府段落"]),
         },
-        "minor": int(r["議員の発言者"]) <= MINOR_MAX_SPEAKERS,
     })
 
 OUT.parent.mkdir(parents=True, exist_ok=True)

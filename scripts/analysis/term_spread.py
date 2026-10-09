@@ -1,19 +1,18 @@
-# scripts/analysis/term_spread.py
-#
-# 【目的】
-# 論点の候補になった語が、特定の1人の発言に偏っていないかを調べる。
-# 指定した語ごとに、「消費税」を含む段落での出現段落数・発言数・発言者数・
-# 議員/政府の内訳・議員の最多発言者とその割合・議員の政党別の内訳を出す。
-# 委員長報告(role=委員長報告)は集計から除く。
-# 段落数が多くても1人の長い発言から出ているだけの語は、論点の大きさを
-# 過大に見せるので、それを見分けるために使う。
-#
-# 【使い方】
-# python scripts/analysis/term_spread.py 滞納 倒産 担税力
-#
-# 【入力】 data/interim/paragraphs_clean.csv(scripts/data/mark_roles.py の出力)
-# 【出力】 output/term_spread.csv(画面にも同じ表を表示)
+"""
+【目的】
+論点の候補になった語が、特定の1人の発言に偏っていないかを調べる。
+指定した語ごとに、「消費税」を含む段落での出現段落数・発言数・発言者数・
+議員/政府の内訳・議員の最多発言者とその割合・議員の政党別の内訳を出す。
+委員長報告(role=委員長報告)は集計から除く。
+段落数が多くても1人の長い発言から出ているだけの語は、論点の大きさを
+過大に見せるので、それを見分けるために使う。
 
+【使い方】
+python scripts/analysis/term_spread.py 滞納 倒産 担税力
+
+【入力】 data/interim/paragraphs_clean.csv(scripts/data/mark_roles.py の出力)
+【出力】 output/term_spread.csv(画面にも同じ表を表示)
+"""
 import sys
 
 import pandas as pd

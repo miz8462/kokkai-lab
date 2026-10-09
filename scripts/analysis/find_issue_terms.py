@@ -1,4 +1,24 @@
-# scripts/analysis/find_issue_terms.py
+"""
+find_issue_terms.py — 「消費税」を含む段落に特徴的な名詞を探し、論点の語の候補を出すスクリプト
+
+目的:
+  論点の語を自分で決め打ちせず、議論の中から出てきた語だけで抽出するための材料を作る。
+  「消費税」を含む段落(対象)と含まない段落(基準)で、名詞の出現段落率を比べ、
+  対象に偏って出る名詞を、対数オッズ比(+0.5で平滑化)の高い順に並べる。
+  複合語を保つため、Sudachi の SplitMode.C で分割する。
+  語の偏りが1人の発言に由来していないかは、term_spread.py で別途確かめる。
+
+使い方:
+  python scripts/analysis/find_issue_terms.py
+  (設定は冒頭の INPUT / TEXT_COL / KEYWORD / MIN_DF / OUTPUT を直す)
+
+入力:
+  data/interim/paragraphs.csv
+出力:
+  output/issue_terms.csv(term, df_target, df_rest, score, example)
+  画面には上位60語を表示
+"""
+
 import math
 import pandas as pd
 from sudachipy import dictionary, tokenizer

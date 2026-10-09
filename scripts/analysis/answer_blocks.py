@@ -1,18 +1,18 @@
-# scripts/analysis/answer_blocks.py
-#
-# 【目的】
-# 政府(role=政府)の段落を、「〜についてお尋ねがありました」などの見出し文で
-# 答弁ブロックに区切り、論点グループごとに「答弁ブロック数」を数える。
-# 段落数は定型答弁の繰り返しで膨らむため、「質問者ごとの答弁1回=1件」に近い
-# 数え方で、政府の応答量を見るためのもの。
-# 見出し文の取りこぼしや誤検出を確認するため、ブロックの一覧も出力する。
-#
-# 【使い方】
-# python scripts/analysis/answer_blocks.py
-#
-# 【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
-# 【出力】 output/answer_blocks.csv(ブロック一覧)
-#          output/answer_blocks_summary.csv(論点別のブロック数)
+"""
+【目的】
+政府(role=政府)の段落を、「〜についてお尋ねがありました」などの見出し文で
+答弁ブロックに区切り、論点グループごとに「答弁ブロック数」を数える。
+段落数は定型答弁の繰り返しで膨らむため、「質問者ごとの答弁1回=1件」に近い
+数え方で、政府の応答量を見るためのもの。
+見出し文の取りこぼしや誤検出を確認するため、ブロックの一覧も出力する。
+
+【使い方】
+python scripts/analysis/answer_blocks.py
+
+【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
+【出力】 output/answer_blocks.csv(ブロック一覧)
+         output/answer_blocks_summary.csv(論点別のブロック数)
+"""
 
 import json
 import re

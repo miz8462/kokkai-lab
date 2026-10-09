@@ -1,7 +1,25 @@
+"""
+inspect_paragraphs.py — 段落分割とクリーニングの結果を目で確かめるスクリプト
+
+目的:
+  split_paragraphs.py で作った paragraphs.csv が、想定どおりかを点検する。
+  「消費税」を含む段落が属する発言の数、発言者の役職(上位15)、政党別の段落数、
+  各発言の第1段落の先頭40文字(クリーニングで冒頭を削りすぎていないかの確認)を出す。
+  データは書き換えない。新しいテーマで段落分割をやり直したあとの、最初の点検に使う。
+
+使い方:
+  python scripts/analysis/inspect_paragraphs.py
+
+入力:
+  data/interim/paragraphs.csv
+出力:
+  画面表示のみ
+"""
+
 import pandas as pd
 
 df = pd.read_csv("data/interim/paragraphs.csv")
-kw = df[df["has_keyword"]]
+kw = df[df["kw_extended"]]
 
 print("「消費税」を含む段落が属する発言の数:", kw["speechID"].nunique())
 

@@ -1,3 +1,26 @@
+"""
+split_paragraphs.py — 発言を段落に分け、対象語を含むかの印をつけるスクリプト
+
+目的:
+  speeches_extracted.csv の各発言を、clean_speech でノイズ除去したうえで改行ごとに段落へ分け、
+  段落単位のCSV(paragraphs.csv)を作る。論点分析は、すべてこの段落が単位になる。
+  各段落に、次の2つの印をつける。
+    has_keyword: 「消費税」を含む
+    kw_extended: 拡張語(消費税・消費減税・給付つき税額控除・給付付き税額控除)のいずれかを含む
+  拡張語は、「消費減税」「給付つき税額控除」など「消費税」を含まずに論点を語る段落を拾うため。
+  対象語を変えるときは、冒頭の KEYWORD と EXTENDED_KEYWORDS を直す。
+  後続: mark_roles.py → dedupe_paragraphs.py の順に実行する。
+
+使い方:
+  python scripts/data/split_paragraphs.py
+
+入力:
+  data/interim/speeches_extracted.csv
+出力:
+  data/interim/paragraphs.csv
+  (speechID, para_id, date, speaker, party, speakerPosition, text, has_keyword, kw_extended)
+"""
+
 import re
 
 import pandas as pd

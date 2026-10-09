@@ -1,4 +1,23 @@
-# scripts/analysis/show_context.py
+"""
+show_context.py — 指定した語を含む段落を、前後の段落つきで読めるMarkdownにするスクリプト
+
+目的:
+  語(例: 滞納、インボイス)が、実際の議論でどんな文脈で使われているかを読むための素材を作る。
+  同じ発言(speechID)の中で、該当段落の前後 N 段落を並べる。
+  見出しには、政党・役職(role)・対象区分(消費税あり / 拡張語のみ / 対象外)・除外印を出す。
+  行は絞らない(除外印の段落も出す)ので、再掲や議長の議事進行も目で確かめられる。
+  論点グループ単位で読むときは read_issue.py を使う。
+
+使い方:
+  python scripts/analysis/show_context.py 滞納         # 前後1段落
+  python scripts/analysis/show_context.py 滞納 2       # 前後2段落
+
+入力:
+  data/interim/paragraphs_clean.csv
+出力:
+  output/context.md
+"""
+
 import sys
 import pandas as pd
 
@@ -42,7 +61,7 @@ lines = [f"# 「{term}」を含む段落: {len(hits)}件\n"]
 
 for i in hits:
     r = df.loc[i]
-    kw = "消費税あり" if str(r["has_keyword"]) == "True" else ("拡張語のみ" if str(r["kw_extended"]) == "True" else "対象外")
+    kw = "消費税あり" if str(r["has_keyword"]) == "True" else ("拡張語のみ" if str(r["kw_extended"]) == "True" else "対象語なし")
     ex = " / 除外" if r["exclude"] else ""
     lines.append(f"## {r[PARTY_COL]} / {r['role']} / {kw}{ex} / {r[SPEECH_COL]}-{r[PARA_COL]}\n")
     for j in range(i - window, i + window + 1):

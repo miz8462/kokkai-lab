@@ -23,8 +23,7 @@
     "gov": {
       "responses": 28,
       "paragraphs": 47
-    },
-    "minor": false
+    }
   },
   {
     "id": "B",
@@ -46,8 +45,7 @@
     "gov": {
       "responses": 8,
       "paragraphs": 9
-    },
-    "minor": false
+    }
   },
   {
     "id": "C",
@@ -71,8 +69,7 @@
     "gov": {
       "responses": 28,
       "paragraphs": 43
-    },
-    "minor": false
+    }
   },
   {
     "id": "D",
@@ -96,8 +93,7 @@
     "gov": {
       "responses": 20,
       "paragraphs": 28
-    },
-    "minor": false
+    }
   },
   {
     "id": "E",
@@ -120,8 +116,7 @@
     "gov": {
       "responses": 13,
       "paragraphs": 17
-    },
-    "minor": false
+    }
   },
   {
     "id": "G",
@@ -142,8 +137,7 @@
     "gov": {
       "responses": 3,
       "paragraphs": 3
-    },
-    "minor": false
+    }
   },
   {
     "id": "H",
@@ -164,8 +158,7 @@
     "gov": {
       "responses": 26,
       "paragraphs": 32
-    },
-    "minor": false
+    }
   },
   {
     "id": "I",
@@ -190,8 +183,7 @@
     "gov": {
       "responses": 15,
       "paragraphs": 16
-    },
-    "minor": false
+    }
   },
   {
     "id": "J",
@@ -209,8 +201,7 @@
     "gov": {
       "responses": 1,
       "paragraphs": 2
-    },
-    "minor": true
+    }
   },
   {
     "id": "K",
@@ -233,8 +224,7 @@
     "gov": {
       "responses": 3,
       "paragraphs": 3
-    },
-    "minor": false
+    }
   },
   {
     "id": "L",
@@ -253,8 +243,7 @@
     "gov": {
       "responses": 2,
       "paragraphs": 5
-    },
-    "minor": true
+    }
   },
   {
     "id": "M",
@@ -275,8 +264,7 @@
     "gov": {
       "responses": 9,
       "paragraphs": 10
-    },
-    "minor": false
+    }
   },
   {
     "id": "N",
@@ -296,8 +284,7 @@
     "gov": {
       "responses": 1,
       "paragraphs": 1
-    },
-    "minor": false
+    }
   },
   {
     "id": "O",
@@ -316,7 +303,6 @@
     "gov": {
       "responses": 2,
       "paragraphs": 3
-    },
-    "minor": false
+    }
   }
 ]

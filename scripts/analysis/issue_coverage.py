@@ -1,18 +1,18 @@
-# scripts/analysis/issue_coverage.py
-#
-# 【目的】
-# data/issues/issue_groups.json の語群が、うまく機能しているかを検査する。
-# (1) 語ごとの該当段落数を出す。一般的すぎる語(多くの無関係な段落を拾う語)を
-#     見つけるため。
-# (2) どのグループにも入らなかった段落を、政党・役職つきで output/uncovered.md に
-#     書き出す。語群が見落とした論点を探すための材料になる。
-# (3) グループに入った段落数と、入らなかった段落数の割合を出す。
-#
-# 【使い方】
-# python scripts/analysis/issue_coverage.py
-#
-# 【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
-# 【出力】 output/uncovered.md(未分類の段落一覧)、画面に語別の件数と網羅率
+"""
+【目的】
+data/issues/issue_groups.json の語群が、うまく機能しているかを検査する。
+(1) 語ごとの該当段落数を出す。一般的すぎる語(多くの無関係な段落を拾う語)を
+    見つけるため。
+(2) どのグループにも入らなかった段落を、政党・役職つきで output/uncovered.md に
+    書き出す。語群が見落とした論点を探すための材料になる。
+(3) グループに入った段落数と、入らなかった段落数の割合を出す。
+
+【使い方】
+python scripts/analysis/issue_coverage.py
+
+【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
+【出力】 output/uncovered.md(未分類の段落一覧)、画面に語別の件数と網羅率
+"""
 
 import json
 

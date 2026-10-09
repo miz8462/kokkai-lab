@@ -1,16 +1,16 @@
-# scripts/analysis/check_chair_reports.py
-#
-# 【目的】
-# 委員長報告(「質疑は、〜」「その詳細は会議録によって御承知願いたい」など)が、
-# paragraphs.csv の中で「議員」「自民党」として扱われていないかを調べる。
-# speakerPosition の値の一覧と、委員長報告らしい段落の発言者・役職・冒頭を出す。
-# 除外ルールを決めるための調査用で、データは書き換えない。
-#
-# 【使い方】
-# python scripts/analysis/check_chair_reports.py
-#
-# 【入力】 data/interim/paragraphs.csv
-# 【出力】 画面表示のみ
+"""
+【目的】
+委員長報告(「質疑は、〜」「その詳細は会議録によって御承知願いたい」など)が、
+paragraphs.csv の中で「議員」「自民党」として扱われていないかを調べる。
+speakerPosition の値の一覧と、委員長報告らしい段落の発言者・役職・冒頭を出す。
+除外ルールを決めるための調査用で、データは書き換えない。
+
+【使い方】
+python scripts/analysis/check_chair_reports.py
+
+【入力】 data/interim/paragraphs.csv
+【出力】 画面表示のみ
+"""
 
 import pandas as pd
 
