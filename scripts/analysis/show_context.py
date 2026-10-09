@@ -42,7 +42,7 @@ lines = [f"# 「{term}」を含む段落: {len(hits)}件\n"]
 
 for i in hits:
     r = df.loc[i]
-    kw = "消費税あり" if str(r["has_keyword"]) == "True" else "消費税なし"
+    kw = "消費税あり" if str(r["has_keyword"]) == "True" else ("拡張語のみ" if str(r["kw_extended"]) == "True" else "対象外")
     ex = " / 除外" if r["exclude"] else ""
     lines.append(f"## {r[PARTY_COL]} / {r['role']} / {kw}{ex} / {r[SPEECH_COL]}-{r[PARA_COL]}\n")
     for j in range(i - window, i + window + 1):

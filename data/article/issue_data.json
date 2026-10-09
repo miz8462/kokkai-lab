@@ -1,0 +1,322 @@
+[
+  {
+    "id": "A",
+    "label": "食料品ゼロの範囲",
+    "member": {
+      "speakers": 22,
+      "paragraphs": 51,
+      "top_speaker": "玉木雄一郎",
+      "top_share": 0.2,
+      "parties": {
+        "立憲民主党": 5,
+        "国民民主党": 4,
+        "参政党": 4,
+        "公明党": 2,
+        "自由民主党": 2,
+        "れいわ新選組": 1,
+        "チームみらい": 1,
+        "中道改革連合": 1,
+        "日本維新の会": 1,
+        "日本共産党": 1
+      }
+    },
+    "gov": {
+      "responses": 28,
+      "paragraphs": 47
+    },
+    "minor": false
+  },
+  {
+    "id": "B",
+    "label": "実施の時期と実務",
+    "member": {
+      "speakers": 10,
+      "paragraphs": 13,
+      "top_speaker": "田中健",
+      "top_share": 0.15,
+      "parties": {
+        "国民民主党": 4,
+        "参政党": 2,
+        "公明党": 1,
+        "れいわ新選組": 1,
+        "日本共産党": 1,
+        "立憲民主党": 1
+      }
+    },
+    "gov": {
+      "responses": 8,
+      "paragraphs": 9
+    },
+    "minor": false
+  },
+  {
+    "id": "C",
+    "label": "給付つき税額控除との関係",
+    "member": {
+      "speakers": 20,
+      "paragraphs": 44,
+      "top_speaker": "高山聡史",
+      "top_share": 0.16,
+      "parties": {
+        "国民民主党": 4,
+        "参政党": 3,
+        "立憲民主党": 3,
+        "自由民主党": 3,
+        "れいわ新選組": 2,
+        "公明党": 2,
+        "日本維新の会": 2,
+        "チームみらい": 1
+      }
+    },
+    "gov": {
+      "responses": 28,
+      "paragraphs": 43
+    },
+    "minor": false
+  },
+  {
+    "id": "D",
+    "label": "決め方(国民会議)",
+    "member": {
+      "speakers": 12,
+      "paragraphs": 16,
+      "top_speaker": "田中健",
+      "top_share": 0.12,
+      "parties": {
+        "国民民主党": 3,
+        "れいわ新選組": 2,
+        "立憲民主党": 2,
+        "チームみらい": 1,
+        "公明党": 1,
+        "中道改革連合": 1,
+        "参政党": 1,
+        "日本維新の会": 1
+      }
+    },
+    "gov": {
+      "responses": 20,
+      "paragraphs": 28
+    },
+    "minor": false
+  },
+  {
+    "id": "E",
+    "label": "事業者の負担",
+    "member": {
+      "speakers": 16,
+      "paragraphs": 36,
+      "top_speaker": "安藤裕",
+      "top_share": 0.33,
+      "parties": {
+        "参政党": 4,
+        "日本共産党": 4,
+        "国民民主党": 3,
+        "れいわ新選組": 2,
+        "中道改革連合": 1,
+        "公明党": 1,
+        "立憲民主党": 1
+      }
+    },
+    "gov": {
+      "responses": 13,
+      "paragraphs": 17
+    },
+    "minor": false
+  },
+  {
+    "id": "G",
+    "label": "負担の公平",
+    "member": {
+      "speakers": 10,
+      "paragraphs": 16,
+      "top_speaker": "神谷宗幣",
+      "top_share": 0.19,
+      "parties": {
+        "参政党": 4,
+        "立憲民主党": 2,
+        "日本共産党": 2,
+        "れいわ新選組": 1,
+        "国民民主党": 1
+      }
+    },
+    "gov": {
+      "responses": 3,
+      "paragraphs": 3
+    },
+    "minor": false
+  },
+  {
+    "id": "H",
+    "label": "財源と社会保障",
+    "member": {
+      "speakers": 16,
+      "paragraphs": 28,
+      "top_speaker": "塩入清香",
+      "top_share": 0.21,
+      "parties": {
+        "参政党": 5,
+        "立憲民主党": 5,
+        "れいわ新選組": 2,
+        "国民民主党": 2,
+        "自由民主党": 2
+      }
+    },
+    "gov": {
+      "responses": 26,
+      "paragraphs": 32
+    },
+    "minor": false
+  },
+  {
+    "id": "I",
+    "label": "物価高と景気",
+    "member": {
+      "speakers": 23,
+      "paragraphs": 37,
+      "top_speaker": "安藤裕",
+      "top_share": 0.08,
+      "parties": {
+        "国民民主党": 6,
+        "日本共産党": 5,
+        "参政党": 3,
+        "れいわ新選組": 2,
+        "立憲民主党": 2,
+        "自由民主党": 2,
+        "公明党": 1,
+        "チームみらい": 1,
+        "日本維新の会": 1
+      }
+    },
+    "gov": {
+      "responses": 15,
+      "paragraphs": 16
+    },
+    "minor": false
+  },
+  {
+    "id": "J",
+    "label": "地方財政への影響",
+    "member": {
+      "speakers": 2,
+      "paragraphs": 2,
+      "top_speaker": "神谷裕",
+      "top_share": 0.5,
+      "parties": {
+        "中道改革連合": 1,
+        "国民民主党": 1
+      }
+    },
+    "gov": {
+      "responses": 1,
+      "paragraphs": 2
+    },
+    "minor": true
+  },
+  {
+    "id": "K",
+    "label": "経済停滞・賃上げの原因か",
+    "member": {
+      "speakers": 15,
+      "paragraphs": 23,
+      "top_speaker": "安藤裕",
+      "top_share": 0.13,
+      "parties": {
+        "参政党": 5,
+        "国民民主党": 3,
+        "れいわ新選組": 2,
+        "日本共産党": 2,
+        "公明党": 1,
+        "立憲民主党": 1,
+        "自由民主党": 1
+      }
+    },
+    "gov": {
+      "responses": 3,
+      "paragraphs": 3
+    },
+    "minor": false
+  },
+  {
+    "id": "L",
+    "label": "医療機関の消費税負担",
+    "member": {
+      "speakers": 5,
+      "paragraphs": 6,
+      "top_speaker": "田中健",
+      "top_share": 0.33,
+      "parties": {
+        "国民民主党": 3,
+        "参政党": 1,
+        "日本維新の会": 1
+      }
+    },
+    "gov": {
+      "responses": 2,
+      "paragraphs": 5
+    },
+    "minor": true
+  },
+  {
+    "id": "M",
+    "label": "連立合意・公約と実行",
+    "member": {
+      "speakers": 9,
+      "paragraphs": 13,
+      "top_speaker": "玉木雄一郎",
+      "top_share": 0.15,
+      "parties": {
+        "れいわ新選組": 2,
+        "公明党": 2,
+        "日本維新の会": 2,
+        "立憲民主党": 2,
+        "国民民主党": 1
+      }
+    },
+    "gov": {
+      "responses": 9,
+      "paragraphs": 10
+    },
+    "minor": false
+  },
+  {
+    "id": "N",
+    "label": "減税か給付金か",
+    "member": {
+      "speakers": 6,
+      "paragraphs": 6,
+      "top_speaker": "八幡愛",
+      "top_share": 0.17,
+      "parties": {
+        "れいわ新選組": 3,
+        "公明党": 1,
+        "日本共産党": 1,
+        "自由民主党": 1
+      }
+    },
+    "gov": {
+      "responses": 1,
+      "paragraphs": 1
+    },
+    "minor": false
+  },
+  {
+    "id": "O",
+    "label": "一律減税・廃止",
+    "member": {
+      "speakers": 8,
+      "paragraphs": 12,
+      "top_speaker": "安藤裕",
+      "top_share": 0.17,
+      "parties": {
+        "参政党": 4,
+        "れいわ新選組": 3,
+        "日本共産党": 1
+      }
+    },
+    "gov": {
+      "responses": 2,
+      "paragraphs": 3
+    },
+    "minor": false
+  }
+]
