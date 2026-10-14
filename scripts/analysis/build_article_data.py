@@ -51,7 +51,12 @@ for _, r in issues.iterrows():
     })
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
-OUT.write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
+payload = {
+    "source": "国会会議録検索システム(国立国会図書館) 直近1年の本会議における発言。「消費税」「消費減税」「給付つき(付き)税額控除」のいずれかを含む段落294件(委員長報告・議長の議事進行・同一演説の再掲を除く)を集計",
+    "note": "論点は、議論の中に出てきた語の組み合わせによる独自の分類。1つの段落が複数の論点に入るため、論点間の合計はできない。政府の応答回数は、見出し文(「〜についてお尋ねがありました」)で区切った答弁のうち、その論点の語を含むものの数",
+    "issues": items,
+}
+OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 print(f"{len(items)}論点を {OUT} に書き出しました")
 for it in items:
     print(f"{it['id']} {it['label']}: 議員{it['member']['speakers']}人 / 政府{it['gov']['responses']}回")
