@@ -1,6 +1,7 @@
 {
   "extraPaths": [
-    "scripts/analysis"
+    "scripts/analysis",
+    "scripts/data"
   ],
   "typeCheckingMode": "basic",
   "venvPath": ".",
