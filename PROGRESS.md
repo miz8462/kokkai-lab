@@ -1,17 +1,17 @@
 <!-- ~/projects/kokkai-lab/PROGRESS.md -->
 # 進行状態 (PROGRESS)
 
-最終更新: 2026-10-14
+最終更新: 2026-10-20
 
 ## ファイル構成
 
 ```
 kokkai-lab/
 ├── data/
-│   ├── raw/          # 取得した生データ (gitignore対象)
-│   ├── interim/      # 中間ファイル (paragraphs.csv, paragraphs_roles.csv, paragraphs_clean.csv など。gitignore対象)
-│   ├── issues/       # issue_groups.json (論点グループの語群), issue_A_sub.json
-│   └── article/      # issue_data.json (記事のチャートに渡すデータ)
+│   ├── raw/<slug>/   # 取得した生データ (gitignore対象)
+│   ├── interim/<slug>/  # 中間ファイル (paragraphs.csv, paragraphs_roles.csv, paragraphs_clean.csv など。gitignore対象)
+│   ├── issues/       # <slug>.json (論点グループの語群。人が確定するファイル), issue_A_sub.json
+│   └── article/      # <slug>.json (記事のチャートに渡すデータ)
 ├── archive/          # 使わなくなった作業の記録 (git mvで移動、履歴は残る)
 │   ├── labels/       # 立場ラベル付けの実験 (scripts / docs / data)
 │   ├── wordfreq/     # 語頻度・集計・グラフの前身
@@ -19,7 +19,7 @@ kokkai-lab/
 ├── scripts/
 │   ├── data/         # 取得・前処理・役割付け・除外
 │   └── analysis/     # 論点の抽出・集計・文脈表示・答弁ブロック・記事用JSON
-├── output/           # 集計結果・文脈表示 (gitignore対象。再実行で再生成できる)
+├── output/<slug>/    # 集計結果・文脈表示 (gitignore対象。再実行で再生成できる)
 ├── tests/            # 動作確認・検証
 ├── POLICY.md         # 分析方針
 ├── PROGRESS.md       # 進行状態
@@ -29,6 +29,10 @@ kokkai-lab/
 ```
 
 実行例: `venv/bin/python scripts/analysis/issue_groups.py` (プロジェクト直下から)
+
+slug は現在 `consumption-tax-issues` をスクリプト内に直書きしている。段階1で `--slug` 引数にする予定。
+
+slug は現在 `consumption-tax-issues` をスクリプト内に直書きしている。段階1で `--slug` 引数にする予定。
 
 ## フェーズ1: 環境準備 ✅
 - [x] Python 3.12 / venv / requirements.txt
