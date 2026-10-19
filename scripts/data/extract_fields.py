@@ -1,8 +1,8 @@
 """
 生データから分析に必要なフィールドを抽出して中間ファイルに保存するスクリプト。
 
-入力: data/raw/speeches_YYYYMMDD.json (最新ファイル)
-出力: data/interim/speeches_extracted.csv
+入力: data/raw/consumption-tax-issues/speeches_YYYYMMDD.json (最新ファイル)
+出力: data/interim/consumption-tax-issues/speeches_extracted.csv
 
 抽出フィールド:
   speechID, date, speaker, speakerGroup, speakerPosition, speech
@@ -15,9 +15,9 @@ from typing import TypedDict, cast
 import pandas as pd
 from party_mapping import normalize_party
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-RAW_DIR = BASE_DIR / "data" / "raw"
-INTERIM_DIR = BASE_DIR / "data" / "interim"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+RAW_DIR = BASE_DIR / "data" / "raw" / "consumption-tax-issues"
+INTERIM_DIR = BASE_DIR / "data" / "interim" / "consumption-tax-issues"
 
 
 class SpeechRecord(TypedDict):

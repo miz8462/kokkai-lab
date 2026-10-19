@@ -9,8 +9,8 @@
 python scripts/analysis/build_article_data.py
 (先に issue_groups.py と answer_blocks.py を実行しておくこと)
 
-【入力】 output/issue_groups.csv, output/answer_blocks_summary.csv
-【出力】 data/article/issue_data.json
+【入力】 output/consumption-tax-issues/issue_groups.csv, output/consumption-tax-issues/answer_blocks_summary.csv
+【出力】 data/article/consumption-tax-issues.json
 """
 
 import json
@@ -19,12 +19,34 @@ from pathlib import Path
 
 import pandas as pd
 
-ISSUES = "output/issue_groups.csv"
-BLOCKS = "output/answer_blocks_summary.csv"
-OUT = Path("data/article/issue_data.json")
+ISSUES = "output/consumption-tax-issues/issue_groups.csv"
+BLOCKS = "output/consumption-tax-issues/answer_blocks_summary.csv"
+OUT = Path("data/article/consumption-tax-issues.json")
+PARAGRAPHS = "data/interim/consumption-tax-issues/paragraphs_clean.csv"
+GROUPS = "data/issues/consumption-tax-issues.json"
 
 issues = pd.read_csv(ISSUES)
 blocks = pd.read_csv(BLOCKS).set_index("論点")
+
+# 政党別の発言者名リストを paragraphs_clean.csv から集計
+df_p = pd.read_csv(PARAGRAPHS)
+df_p["exclude"] = df_p["exclude"].astype(str).str.lower().isin(["true", "1"])
+df_p["kw_extended"] = df_p["kw_extended"].astype(str).str.lower().isin(["true", "1"])
+df_p = df_p[df_p["kw_extended"] & (df_p["role"] != "委員長報告") & (~df_p["exclude"])].copy()
+
+with open(GROUPS, encoding="utf-8") as f:
+    groups = json.load(f)
+
+speakers_map = {}
+for g_name, words in groups.items():
+    g_id, _, _ = g_name.partition(" ")
+    pattern = "|".join(words)
+    sub = df_p[df_p["text"].str.contains(pattern, na=False, regex=True)]
+    mem = sub[sub["role"] == "議員"]
+    parties_speakers = {}
+    for party, grp in mem.groupby("party"):
+        parties_speakers[party] = grp["speaker"].value_counts().index.tolist()
+    speakers_map[g_id] = parties_speakers
 
 items = []
 for _, r in issues.iterrows():
@@ -43,6 +65,7 @@ for _, r in issues.iterrows():
             "top_speaker": r["議員の最多"],
             "top_share": float(r["最多の割合"]),
             "parties": parties,
+            "party_speakers": speakers_map.get(issue_id, {}),
         },
         "gov": {
             "responses": int(b["答弁ブロック"]) if b is not None else 0,

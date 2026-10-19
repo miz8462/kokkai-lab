@@ -15,9 +15,9 @@ split_paragraphs.py — 発言を段落に分け、対象語を含むかの印�
   python scripts/data/split_paragraphs.py
 
 入力:
-  data/interim/speeches_extracted.csv
+  data/interim/consumption-tax-issues/speeches_extracted.csv
 出力:
-  data/interim/paragraphs.csv
+  data/interim/consumption-tax-issues/paragraphs.csv
   (speechID, para_id, date, speaker, party, speakerPosition, text, has_keyword, kw_extended)
 """
 
@@ -30,7 +30,7 @@ KEYWORD = "消費税"
 # 「消費税」の語を使わずに論点を語る段落を拾うための拡張語
 EXTENDED_KEYWORDS = [KEYWORD, "消費減税", "給付つき税額控除", "給付付き税額控除"]
 
-df = pd.read_csv("data/interim/speeches_extracted.csv")
+df = pd.read_csv("data/interim/consumption-tax-issues/speeches_extracted.csv")
 
 rows = []
 for _, r in df.iterrows():
@@ -55,7 +55,7 @@ for _, r in df.iterrows():
         })
 
 out = pd.DataFrame(rows)
-out.to_csv("data/interim/paragraphs.csv", index=False, encoding="utf-8-sig")
+out.to_csv("data/interim/consumption-tax-issues/paragraphs.csv", index=False, encoding="utf-8-sig")
 
 print("全段落数:", len(out))
 print("「消費税」を含む段落数:", out["has_keyword"].sum())

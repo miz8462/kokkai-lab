@@ -3,9 +3,9 @@ import sys
 from pathlib import Path
 from typing import cast
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(BASE_DIR / "scripts"))
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR / "scripts" / "data"))
 from clean_speech import clean_speech
 
 
@@ -14,7 +14,7 @@ def load_speeches(path: Path) -> list[dict[str, str]]:
         return cast(list[dict[str, str]], json.load(f))
 
 
-speeches = load_speeches(BASE_DIR / "data" / "raw" / "speeches_20260925.json")
+speeches = load_speeches(BASE_DIR / "data" / "raw" / "consumption-tax-issues" / "speeches_20260925.json")
 
 print(f"件数: {len(speeches)}\n")
 

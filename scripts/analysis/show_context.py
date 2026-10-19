@@ -13,22 +13,22 @@ show_context.py — 指定した語を含む段落を、前後の段落つきで
   python scripts/analysis/show_context.py 滞納 2       # 前後2段落
 
 入力:
-  data/interim/paragraphs_clean.csv
+  data/interim/consumption-tax-issues/paragraphs_clean.csv
 出力:
-  output/context.md
+  output/consumption-tax-issues/context.md
 """
 
 import sys
 import pandas as pd
 
 # --- ここだけ自分のCSVに合わせて直す ---
-INPUT = "data/interim/paragraphs_clean.csv"
+INPUT = "data/interim/consumption-tax-issues/paragraphs_clean.csv"
 TEXT_COL = "text"
 SPEECH_COL = "speechID"
 PARA_COL = "para_id"
 PARTY_COL = "party"
 POSITION_COL = "speakerPosition"  # roleがないときの代替
-OUTPUT = "output/context.md"
+OUTPUT = "output/consumption-tax-issues/context.md"
 # ---------------------------------------
 
 term = sys.argv[1]

@@ -12,10 +12,10 @@ read_issue.py — 論点グループの該当段落を、読みやすいMarkdown
   python scripts/analysis/read_issue.py E 1 インボイス  # 語を1つに絞る
 
 入力:
-  data/interim/paragraphs_clean.csv
-  data/issues/issue_groups.json
+  data/interim/consumption-tax-issues/paragraphs_clean.csv
+  data/issues/consumption-tax-issues.json
 出力:
-  output/issue_<論点ID>.md
+  output/consumption-tax-issues/issue_<論点ID>.md
 """
 import json
 import sys
@@ -24,8 +24,8 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
-PARAS = ROOT / "data/interim/paragraphs_clean.csv"
-GROUPS = ROOT / "data/issues/issue_groups.json"
+PARAS = ROOT / "data/interim/consumption-tax-issues/paragraphs_clean.csv"
+GROUPS = ROOT / "data/issues/consumption-tax-issues.json"
 
 gid = sys.argv[1]
 n_ctx = int(sys.argv[2]) if len(sys.argv) > 2 else 1
@@ -75,7 +75,7 @@ for date, day in hits.sort_values(["date", "speechID", "para_id"]).groupby("date
                 lines.append(("  - ▶ " if off == 0 else "  - ") + render(p, off == 0))
             lines.append("")
 
-out = ROOT / f"output/issue_{gid}.md"
+out = ROOT / f"output/consumption-tax-issues/issue_{gid}.md"
 out.parent.mkdir(exist_ok=True)
 out.write_text("\n".join(lines), encoding="utf-8")
 print(f"{out} に書き出しました({len(hits)}段落)")

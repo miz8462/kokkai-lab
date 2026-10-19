@@ -13,14 +13,14 @@ role は 議員 / 政府 / 議長 / 委員長報告 の4種類。
 【使い方】
 python scripts/data/mark_roles.py
 
-【入力】 data/interim/paragraphs.csv
-【出力】 data/interim/paragraphs_roles.csv(元のCSVは書き換えない)
+【入力】 data/interim/consumption-tax-issues/paragraphs.csv
+【出力】 data/interim/consumption-tax-issues/paragraphs_roles.csv(元のCSVは書き換えない)
 """
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs.csv"
-OUTPUT = "data/interim/paragraphs_roles.csv"
+INPUT = "data/interim/consumption-tax-issues/paragraphs.csv"
+OUTPUT = "data/interim/consumption-tax-issues/paragraphs_roles.csv"
 TEXT_COL = "text"
 SPEAKER_COL = "speaker"
 POSITION_COL = "speakerPosition"

@@ -15,10 +15,10 @@ dedupe_paragraphs.py — 議長の議事進行と、同じ文面の再掲を分�
   python scripts/data/dedupe_paragraphs.py 0.95     # 閾値を指定
 
 入力:
-  data/interim/paragraphs_roles.csv
+  data/interim/consumption-tax-issues/paragraphs_roles.csv
 出力:
-  data/interim/paragraphs_clean.csv
-  output/duplicates.md  (どの段落をどれの重複とみなしたかの一覧)
+  data/interim/consumption-tax-issues/paragraphs_clean.csv
+  output/consumption-tax-issues/duplicates.md  (どの段落をどれの重複とみなしたかの一覧)
 """
 import re
 import sys
@@ -28,9 +28,9 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
-SRC = ROOT / "data/interim/paragraphs_roles.csv"
-DST = ROOT / "data/interim/paragraphs_clean.csv"
-REPORT = ROOT / "output/duplicates.md"
+SRC = ROOT / "data/interim/consumption-tax-issues/paragraphs_roles.csv"
+DST = ROOT / "data/interim/consumption-tax-issues/paragraphs_clean.csv"
+REPORT = ROOT / "output/consumption-tax-issues/duplicates.md"
 
 THRESHOLD = float(sys.argv[1]) if len(sys.argv) > 1 else 0.9
 MIN_LEN = 40

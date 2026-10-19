@@ -1,6 +1,6 @@
 """
 【目的】
-data/issues/issue_groups.json で定義した論点グループごとに、
+data/issues/consumption-tax-issues.json で定義した論点グループごとに、
 「消費税」を含む段落(委員長報告を除く)での広がりを集計する。
 グループのいずれかの語を含む段落を、そのグループの段落とみなす。
 出すもの: 段落数、議員段落/政府段落、議員の発言者数、議員の最多発言者と割合、
@@ -11,17 +11,17 @@ data/issues/issue_groups.json で定義した論点グループごとに、
 【使い方】
 python scripts/analysis/issue_groups.py
 
-【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
-【出力】 output/issue_groups.csv(画面にも表示)
+【入力】 data/interim/consumption-tax-issues/paragraphs_clean.csv, data/issues/consumption-tax-issues.json
+【出力】 output/consumption-tax-issues/issue_groups.csv(画面にも表示)
 """
 
 import json
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs_clean.csv"
-GROUPS = "data/issues/issue_groups.json"
-OUTPUT = "output/issue_groups.csv"
+INPUT = "data/interim/consumption-tax-issues/paragraphs_clean.csv"
+GROUPS = "data/issues/consumption-tax-issues.json"
+OUTPUT = "output/consumption-tax-issues/issue_groups.csv"
 TEXT_COL = "text"
 SPEAKER_COL = "speaker"
 PARTY_COL = "party"

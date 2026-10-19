@@ -13,9 +13,9 @@ find_issue_terms.py — 「消費税」を含む段落に特徴的な名詞を�
   (設定は冒頭の INPUT / TEXT_COL / KEYWORD / MIN_DF / OUTPUT を直す)
 
 入力:
-  data/interim/paragraphs.csv
+  data/interim/consumption-tax-issues/paragraphs.csv
 出力:
-  output/issue_terms.csv(term, df_target, df_rest, score, example)
+  output/consumption-tax-issues/issue_terms.csv(term, df_target, df_rest, score, example)
   画面には上位60語を表示
 """
 
@@ -24,11 +24,11 @@ import pandas as pd
 from sudachipy import dictionary, tokenizer
 
 # --- ここだけ自分のCSVに合わせて直す ---
-INPUT = "data/interim/paragraphs.csv"
+INPUT = "data/interim/consumption-tax-issues/paragraphs.csv"
 TEXT_COL = "text"          # 段落本文の列名
 KEYWORD = "消費税"
 MIN_DF = 4                 # 対象段落での最低出現段落数
-OUTPUT = "output/issue_terms.csv"
+OUTPUT = "output/consumption-tax-issues/issue_terms.csv"
 # ---------------------------------------
 
 df = pd.read_csv(INPUT)

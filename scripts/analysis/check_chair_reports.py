@@ -8,13 +8,13 @@ speakerPosition の値の一覧と、委員長報告らしい段落の発言者�
 【使い方】
 python scripts/analysis/check_chair_reports.py
 
-【入力】 data/interim/paragraphs.csv
+【入力】 data/interim/consumption-tax-issues/paragraphs.csv
 【出力】 画面表示のみ
 """
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs.csv"
+INPUT = "data/interim/consumption-tax-issues/paragraphs.csv"
 TEXT_COL = "text"
 SPEAKER_COL = "speaker"
 POSITION_COL = "speakerPosition"

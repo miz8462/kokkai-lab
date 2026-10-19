@@ -11,14 +11,14 @@ inspect_paragraphs.py — 段落分割とクリーニングの結果を目で確
   python scripts/analysis/inspect_paragraphs.py
 
 入力:
-  data/interim/paragraphs.csv
+  data/interim/consumption-tax-issues/paragraphs.csv
 出力:
   画面表示のみ
 """
 
 import pandas as pd
 
-df = pd.read_csv("data/interim/paragraphs.csv")
+df = pd.read_csv("data/interim/consumption-tax-issues/paragraphs.csv")
 kw = df[df["kw_extended"]]
 
 print("「消費税」を含む段落が属する発言の数:", kw["speechID"].nunique())

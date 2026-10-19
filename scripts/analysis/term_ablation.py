@@ -11,10 +11,10 @@
   python scripts/analysis/term_ablation.py
 
 入力:
-  data/interim/paragraphs_roles.csv
-  data/issues/issue_groups.json
+  data/interim/consumption-tax-issues/paragraphs_roles.csv
+  data/issues/consumption-tax-issues.json
 出力:
-  標準出力(グループ別の表)と output/term_ablation.csv
+  標準出力(グループ別の表)と output/consumption-tax-issues/term_ablation.csv
 """
 import json
 from pathlib import Path
@@ -22,9 +22,9 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
-PARAS = ROOT / "data/interim/paragraphs_clean.csv"
-GROUPS = ROOT / "data/issues/issue_groups.json"
-OUT = ROOT / "output/term_ablation.csv"
+PARAS = ROOT / "data/interim/consumption-tax-issues/paragraphs_clean.csv"
+GROUPS = ROOT / "data/issues/consumption-tax-issues.json"
+OUT = ROOT / "output/consumption-tax-issues/term_ablation.csv"
 
 
 def load_groups(path):

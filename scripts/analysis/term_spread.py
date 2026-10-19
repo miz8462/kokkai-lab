@@ -10,20 +10,20 @@
 【使い方】
 python scripts/analysis/term_spread.py 滞納 倒産 担税力
 
-【入力】 data/interim/paragraphs_clean.csv(scripts/data/mark_roles.py の出力)
-【出力】 output/term_spread.csv(画面にも同じ表を表示)
+【入力】 data/interim/consumption-tax-issues/paragraphs_clean.csv(scripts/data/mark_roles.py の出力)
+【出力】 output/consumption-tax-issues/term_spread.csv(画面にも同じ表を表示)
 """
 import sys
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs_clean.csv"
+INPUT = "data/interim/consumption-tax-issues/paragraphs_clean.csv"
 TEXT_COL = "text"
 SPEECH_COL = "speechID"
 SPEAKER_COL = "speaker"
 PARTY_COL = "party"
 KEYWORD = "消費税"
-OUTPUT = "output/term_spread.csv"
+OUTPUT = "output/consumption-tax-issues/term_spread.csv"
 
 terms = sys.argv[1:]
 if not terms:

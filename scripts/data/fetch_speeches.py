@@ -2,7 +2,7 @@
 国会会議録検索システムAPIから、指定条件の発言を全件取得するスクリプト。
 
 条件: 直近1年・本会議・検索語「消費税」
-出力: data/raw/speeches_YYYYMMDD.json (生データをそのまま保存)
+出力: data/raw/consumption-tax-issues/speeches_YYYYMMDD.json (生データをそのまま保存)
 """
 import json
 import time
@@ -12,8 +12,8 @@ from pathlib import Path
 import requests
 
 BASE_URL = "https://kokkai.ndl.go.jp/api/speech"
-BASE_DIR = Path(__file__).resolve().parent.parent
-OUTPUT_DIR = BASE_DIR / "data" / "raw"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+OUTPUT_DIR = BASE_DIR / "data" / "raw" / "consumption-tax-issues"
 SLEEP_SECONDS = 3  # 利用規約に配慮し、リクエスト間に数秒空ける
 
 today = date.today() # noqa: DTZ011

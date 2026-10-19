@@ -9,9 +9,9 @@
 【使い方】
 python scripts/analysis/answer_blocks.py
 
-【入力】 data/interim/paragraphs_clean.csv, data/issues/issue_groups.json
-【出力】 output/answer_blocks.csv(ブロック一覧)
-         output/answer_blocks_summary.csv(論点別のブロック数)
+【入力】 data/interim/consumption-tax-issues/paragraphs_clean.csv, data/issues/consumption-tax-issues.json
+【出力】 output/consumption-tax-issues/answer_blocks.csv(ブロック一覧)
+         output/consumption-tax-issues/answer_blocks_summary.csv(論点別のブロック数)
 """
 
 import json
@@ -19,10 +19,10 @@ import re
 
 import pandas as pd
 
-INPUT = "data/interim/paragraphs_clean.csv"
-GROUPS = "data/issues/issue_groups.json"
-OUT_BLOCKS = "output/answer_blocks.csv"
-OUT_SUMMARY = "output/answer_blocks_summary.csv"
+INPUT = "data/interim/consumption-tax-issues/paragraphs_clean.csv"
+GROUPS = "data/issues/consumption-tax-issues.json"
+OUT_BLOCKS = "output/consumption-tax-issues/answer_blocks.csv"
+OUT_SUMMARY = "output/consumption-tax-issues/answer_blocks_summary.csv"
 
 HEADING = re.compile(r"お尋ね(が)?(あり|ござい)ました")
 HEADING_MAX_LEN = 60

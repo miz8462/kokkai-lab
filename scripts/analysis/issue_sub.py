@@ -10,9 +10,9 @@ issue_sub.py — 論点のサブグループ別に、議員・政府の段落数
   python scripts/analysis/issue_sub.py data/issues/issue_A_sub.json
 
 入力:
-  data/interim/paragraphs_clean.csv, 引数で指定したJSON
+  data/interim/consumption-tax-issues/paragraphs_clean.csv, 引数で指定したJSON
 出力:
-  標準出力と output/issue_sub.csv
+  標準出力と output/consumption-tax-issues/issue_sub.csv
 """
 import json
 import sys
@@ -21,8 +21,8 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
-PARAS = ROOT / "data/interim/paragraphs_clean.csv"
-OUT = ROOT / "output/issue_sub.csv"
+PARAS = ROOT / "data/interim/consumption-tax-issues/paragraphs_clean.csv"
+OUT = ROOT / "output/consumption-tax-issues/issue_sub.csv"
 
 groups = json.load(open(sys.argv[1], encoding="utf-8"))
 
