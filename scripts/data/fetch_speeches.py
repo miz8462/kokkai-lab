@@ -1,41 +1,40 @@
 """
 国会会議録検索システムAPIから、指定条件の発言を全件取得するスクリプト。
 
-条件: 直近1年・本会議・検索語「消費税」
-出力: data/raw/consumption-tax-issues/speeches_YYYYMMDD.json (生データをそのまま保存)
+条件: config/<slug>.json に定義された keyword, meeting、および直近1年
+出力: data/raw/<slug>/speeches_YYYYMMDD.json (生データをそのまま保存)
+
+使い方:
+  python scripts/data/fetch_speeches.py --slug consumption-tax-issues
+  python scripts/data/fetch_speeches.py --slug consumption-tax-issues --force
 """
+import argparse
 import json
+import sys
 import time
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Any
 
-import requests
+# scripts/ を sys.path に追加して common を import 可能にする
+SCRIPTS_DIR = Path(__file__).resolve().parent.parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+import requests  # noqa: E402
+from common import load_config, paths  # noqa: E402
 
 BASE_URL = "https://kokkai.ndl.go.jp/api/speech"
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-OUTPUT_DIR = BASE_DIR / "data" / "raw" / "consumption-tax-issues"
 SLEEP_SECONDS = 3  # 利用規約に配慮し、リクエスト間に数秒空ける
 
-today = date.today() # noqa: DTZ011
-one_year_ago = today - timedelta(days=365)
 
-BASE_PARAMS = {
-    "any": "消費税",
-    "nameOfMeeting": "本会議",
-    "from": one_year_ago.isoformat(),
-    "until": today.isoformat(),
-    "maximumRecords": 100,  # speech出力の上限
-    "recordPacking": "json",
-}
-
-
-def fetch_all():
-    all_records = []
+def fetch_all(base_params: dict[str, Any]) -> list[dict[str, Any]]:
+    all_records: list[dict[str, Any]] = []
     start_record = 1
-    total = None
+    total: int | None = None
 
     while True:
-        params = {**BASE_PARAMS, "startRecord": start_record}
+        params = {**base_params, "startRecord": start_record}
         resp = requests.get(BASE_URL, params=params)
         resp.raise_for_status()
         data = resp.json()
@@ -57,11 +56,42 @@ def fetch_all():
     return all_records
 
 
-def main():
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    records = fetch_all()
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="国会会議録検索システムAPIから発言データを取得するスクリプト"
+    )
+    parser.add_argument("--slug", required=True, help="分析対象のスラッグ (例: consumption-tax-issues)")
+    parser.add_argument("--force", action="store_true", help="同名ファイルが存在する場合に上書きする")
+    args = parser.parse_args()
 
-    out_path = OUTPUT_DIR / f"speeches_{today.strftime('%Y%m%d')}.json"
+    slug: str = args.slug
+    force: bool = args.force
+
+    config = load_config(slug)
+    p = paths(slug)
+    raw_dir = p["raw"]
+
+    today = date.today()  # noqa: DTZ011
+    one_year_ago = today - timedelta(days=365)
+
+    base_params = {
+        "any": config["keyword"],
+        "nameOfMeeting": config["meeting"],
+        "from": one_year_ago.isoformat(),
+        "until": today.isoformat(),
+        "maximumRecords": 100,  # speech出力の上限
+        "recordPacking": "json",
+    }
+
+    out_path = raw_dir / f"speeches_{today.strftime('%Y%m%d')}.json"
+    if out_path.exists() and not force:
+        raise FileExistsError(
+            f"出力先ファイルが既に存在します: {out_path}。上書きする場合は --force を指定してください。"
+        )
+
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    records = fetch_all(base_params)
+
     with out_path.open("w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
 

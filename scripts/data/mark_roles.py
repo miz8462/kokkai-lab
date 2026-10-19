@@ -11,40 +11,71 @@ role は 議員 / 政府 / 議長 / 委員長報告 の4種類。
 混ざっていないかを目で確かめること。
 
 【使い方】
-python scripts/data/mark_roles.py
+python scripts/data/mark_roles.py --slug consumption-tax-issues
 
-【入力】 data/interim/consumption-tax-issues/paragraphs.csv
-【出力】 data/interim/consumption-tax-issues/paragraphs_roles.csv(元のCSVは書き換えない)
+【入力】 data/interim/<slug>/paragraphs.csv
+【出力】 data/interim/<slug>/paragraphs_roles.csv (元のCSVは書き換えない)
 """
 
-import pandas as pd
+import argparse
+import sys
+from pathlib import Path
 
-INPUT = "data/interim/consumption-tax-issues/paragraphs.csv"
-OUTPUT = "data/interim/consumption-tax-issues/paragraphs_roles.csv"
+# scripts/ を sys.path に追加して common を import 可能にする
+SCRIPTS_DIR = Path(__file__).resolve().parent.parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+import pandas as pd  # noqa: E402
+from common import paths  # noqa: E402
+
 TEXT_COL = "text"
 SPEAKER_COL = "speaker"
 POSITION_COL = "speakerPosition"
 CHAIR_PATTERN = r"^質疑は、|会議録によって御承知"
 
-df = pd.read_csv(INPUT)
-pos = df[POSITION_COL].fillna("").astype(str).str.strip()
 
-chair_mask = df[TEXT_COL].str.contains(CHAIR_PATTERN, na=False, regex=True)
-chair_speakers = sorted(df.loc[chair_mask, SPEAKER_COL].dropna().unique())
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="paragraphs.csv の各段落に発言者の種別(role)を付与するスクリプト"
+    )
+    parser.add_argument("--slug", required=True, help="分析対象のスラッグ (例: consumption-tax-issues)")
+    args = parser.parse_args()
 
-role = pd.Series("議員", index=df.index)
-role[pos != ""] = "政府"
-role[pos == "議長"] = "議長"
-is_chair = df[SPEAKER_COL].isin(chair_speakers) & (pos == "")
-role[is_chair] = "委員長報告"
-df["role"] = role
+    slug: str = args.slug
+    p = paths(slug)
+    interim_dir = p["interim"]
 
-df.to_csv(OUTPUT, index=False)
+    in_path = interim_dir / "paragraphs.csv"
+    if not in_path.exists():
+        raise FileNotFoundError(f"入力ファイルが見つかりません: {in_path}")
 
-print(f"委員長報告と判定した発言者: {chair_speakers}")
-print(df["role"].value_counts().to_string())
-for s in chair_speakers:
-    print(f"\n【{s}の全段落 {int((df[SPEAKER_COL] == s).sum())}件】")
-    for _, r in df[df[SPEAKER_COL] == s].iterrows():
-        print(f"- {r['role']} / {str(r[TEXT_COL])[:40]}")
-print(f"\n{OUTPUT} に書き出しました")
+    out_path = interim_dir / "paragraphs_roles.csv"
+
+    df = pd.read_csv(in_path)
+    pos = df[POSITION_COL].fillna("").astype(str).str.strip()
+
+    chair_mask = df[TEXT_COL].str.contains(CHAIR_PATTERN, na=False, regex=True)
+    chair_speakers = sorted(df.loc[chair_mask, SPEAKER_COL].dropna().unique())
+
+    role = pd.Series("議員", index=df.index)
+    role[pos != ""] = "政府"
+    role[pos == "議長"] = "議長"
+    is_chair = df[SPEAKER_COL].isin(chair_speakers) & (pos == "")
+    role[is_chair] = "委員長報告"
+    df["role"] = role
+
+    interim_dir.mkdir(parents=True, exist_ok=True)
+    df.to_csv(out_path, index=False)
+
+    print(f"委員長報告と判定した発言者: {chair_speakers}")
+    print(df["role"].value_counts().to_string())
+    for s in chair_speakers:
+        print(f"\n【{s}の全段落 {int((df[SPEAKER_COL] == s).sum())}件】")
+        for _, r in df[df[SPEAKER_COL] == s].iterrows():
+            print(f"- {r['role']} / {str(r[TEXT_COL])[:40]}")
+    print(f"\n{out_path} に書き出しました")
+
+
+if __name__ == "__main__":
+    main()
