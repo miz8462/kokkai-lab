@@ -7,75 +7,105 @@ read_issue.py — 論点グループの該当段落を、読みやすいMarkdown
   論点の内部の対立(どの対策を選ぶか)を、手で読んで整理するための素材にする。
 
 使い方:
-  python scripts/analysis/read_issue.py A            # 前後1段落
-  python scripts/analysis/read_issue.py C 2          # 前後2段落
-  python scripts/analysis/read_issue.py E 1 インボイス  # 語を1つに絞る
+  python scripts/analysis/read_issue.py --slug consumption-tax-issues A            # 前後1段落
+  python scripts/analysis/read_issue.py --slug consumption-tax-issues C 2          # 前後2段落
+  python scripts/analysis/read_issue.py --slug consumption-tax-issues E 1 インボイス  # 語を1つに絞る
 
 入力:
-  data/interim/consumption-tax-issues/paragraphs_clean.csv
-  data/issues/consumption-tax-issues.json
+  data/interim/<slug>/paragraphs_clean.csv
+  data/issues/<slug>.json
 出力:
-  output/consumption-tax-issues/issue_<論点ID>.md
+  output/<slug>/issue_<論点ID>.md
 """
+import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
-import pandas as pd
+# scripts/ を sys.path に追加して common を import 可能にする
+SCRIPTS_DIR = Path(__file__).resolve().parent.parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 
-ROOT = Path(__file__).resolve().parents[2]
-PARAS = ROOT / "data/interim/consumption-tax-issues/paragraphs_clean.csv"
-GROUPS = ROOT / "data/issues/consumption-tax-issues.json"
-
-gid = sys.argv[1]
-n_ctx = int(sys.argv[2]) if len(sys.argv) > 2 else 1
-only_term = sys.argv[3] if len(sys.argv) > 3 else None
-
-raw = json.load(open(GROUPS, encoding="utf-8"))
-key = next(k for k in raw if k == gid or k.split()[0] == gid)
-val = raw[key]
-terms = (val.get("terms") or val.get("words") or []) if isinstance(val, dict) else val
-if only_term:
-    terms = [only_term]
-
-df = pd.read_csv(PARAS)
-df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
-df["text"] = df["text"].fillna("")
-df["party"] = df["party"].fillna("")
-has_kw = df["kw_extended"].astype(str).str.lower().isin(["true", "1"])
-by_pos = {(r.speechID, r.para_id): r for r in df.itertuples()}
-
-hits = df[has_kw & (df["role"] != "委員長報告") & (~df["exclude"])].copy()
-hits["matched"] = hits["text"].apply(lambda s: [t for t in terms if t in s])
-hits = hits[hits["matched"].str.len() > 0]
+import pandas as pd  # noqa: E402
+from common import paths  # noqa: E402
 
 
-def render(r, mark=False):
+def render(r: Any, mark: bool = False) -> str:
     who = f"{r.speaker}({r.party or r.speakerPosition or r.role})"
     head = f"**{who}**" if mark else f"{who}"
     return f"{head}: {r.text}"
 
 
-lines = [f"# 論点 {key}(語: {' / '.join(terms)})", f"該当 {len(hits)} 段落\n"]
-for date, day in hits.sort_values(["date", "speechID", "para_id"]).groupby("date"):
-    lines.append(f"## {date}")
-    for label, roles in [("議員", ["議員"]), ("政府", ["政府", "議長"])]:
-        part = day[day["role"].isin(roles)]
-        if part.empty:
-            continue
-        lines.append(f"### {label}({len(part)}段落)")
-        for r in part.itertuples():
-            matched = [str(t) for t in r.matched]  # pyright: ignore
-            lines.append(f"- 一致語: {', '.join(matched)}")
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="論点グループの該当段落をMarkdownとして出力するスクリプト"
+    )
+    parser.add_argument("--slug", required=True, help="分析対象のスラッグ (例: consumption-tax-issues)")
+    parser.add_argument("gid", help="論点ID (例: A)")
+    parser.add_argument("n_ctx", nargs="?", type=int, default=1, help="前後の段落数 (既定値: 1)")
+    parser.add_argument("only_term", nargs="?", default=None, help="特定の語に絞る場合の語")
+    args = parser.parse_args()
 
-            for off in range(-n_ctx, n_ctx + 1):
-                p = by_pos.get((str(r.speechID), int(r.para_id) + off))  # pyright: ignore
-                if p is None:
-                    continue
-                lines.append(("  - ▶ " if off == 0 else "  - ") + render(p, off == 0))
-            lines.append("")
+    slug: str = args.slug
+    gid: str = args.gid
+    n_ctx: int = args.n_ctx
+    only_term: str | None = args.only_term
 
-out = ROOT / f"output/consumption-tax-issues/issue_{gid}.md"
-out.parent.mkdir(exist_ok=True)
-out.write_text("\n".join(lines), encoding="utf-8")
-print(f"{out} に書き出しました({len(hits)}段落)")
+    p = paths(slug)
+    in_path = p["interim"] / "paragraphs_clean.csv"
+    groups_path = p["groups"]
+    out_path = p["output"] / f"issue_{gid}.md"
+
+    if not in_path.exists():
+        raise FileNotFoundError(f"入力ファイルが見つかりません: {in_path}")
+    if not groups_path.exists():
+        raise FileNotFoundError(f"語群定義ファイルが見つかりません: {groups_path}")
+
+    with groups_path.open("r", encoding="utf-8") as f:
+        raw = json.load(f)
+
+    key = next(k for k in raw if k == gid or k.split()[0] == gid)
+    val = raw[key]
+    terms = (val.get("terms") or val.get("words") or []) if isinstance(val, dict) else val
+    if only_term:
+        terms = [only_term]
+
+    df = pd.read_csv(in_path)
+    df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
+    df["text"] = df["text"].fillna("")
+    df["party"] = df["party"].fillna("")
+    has_kw = df["kw_extended"].astype(str).str.lower().isin(["true", "1"])
+    by_pos = {(r.speechID, r.para_id): r for r in df.itertuples()}
+
+    hits = df[has_kw & (df["role"] != "委員長報告") & (~df["exclude"])].copy()
+    hits["matched"] = hits["text"].apply(lambda s: [t for t in terms if t in s])
+    hits = hits[hits["matched"].str.len() > 0]
+
+    lines = [f"# 論点 {key}(語: {' / '.join(terms)})", f"該当 {len(hits)} 段落\n"]
+    for date, day in hits.sort_values(["date", "speechID", "para_id"]).groupby("date"):
+        lines.append(f"## {date}")
+        for label, roles in [("議員", ["議員"]), ("政府", ["政府", "議長"])]:
+            part = day[day["role"].isin(roles)]
+            if part.empty:
+                continue
+            lines.append(f"### {label}({len(part)}段落)")
+            for r in part.itertuples():
+                matched = [str(t) for t in r.matched]  # pyright: ignore
+                lines.append(f"- 一致語: {', '.join(matched)}")
+
+                for off in range(-n_ctx, n_ctx + 1):
+                    p_row = by_pos.get((str(r.speechID), int(r.para_id) + off))  # pyright: ignore
+                    if p_row is None:
+                        continue
+                    lines.append(("  - ▶ " if off == 0 else "  - ") + render(p_row, off == 0))
+                lines.append("")
+
+    p["output"].mkdir(parents=True, exist_ok=True)
+    out_path.write_text("\n".join(lines), encoding="utf-8")
+    print(f"{out_path} に書き出しました({len(hits)}段落)")
+
+
+if __name__ == "__main__":
+    main()

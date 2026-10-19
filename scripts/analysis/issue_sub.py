@@ -7,53 +7,92 @@ issue_sub.py — 論点のサブグループ別に、議員・政府の段落数
   特に A2(食料品だけか一律か)で、どの政党がどの立場の語を使うかを見る。
 
 使い方:
-  python scripts/analysis/issue_sub.py data/issues/issue_A_sub.json
+  python scripts/analysis/issue_sub.py --slug consumption-tax-issues data/issues/issue_A_sub.json
 
 入力:
-  data/interim/consumption-tax-issues/paragraphs_clean.csv, 引数で指定したJSON
+  data/interim/<slug>/paragraphs_clean.csv, 引数で指定したJSON
 出力:
-  標準出力と output/consumption-tax-issues/issue_sub.csv
+  標準出力と output/<slug>/issue_sub.csv
 """
+import argparse
 import json
 import sys
 from pathlib import Path
 
-import pandas as pd
+# scripts/ を sys.path に追加して common を import 可能にする
+SCRIPTS_DIR = Path(__file__).resolve().parent.parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 
-ROOT = Path(__file__).resolve().parents[2]
-PARAS = ROOT / "data/interim/consumption-tax-issues/paragraphs_clean.csv"
-OUT = ROOT / "output/consumption-tax-issues/issue_sub.csv"
+import pandas as pd  # noqa: E402
+from common import BASE, paths  # noqa: E402
 
-groups = json.load(open(sys.argv[1], encoding="utf-8"))
 
-df = pd.read_csv(PARAS)
-df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
-df["text"] = df["text"].fillna("")
-df["party"] = df["party"].fillna("")
-has_kw = df["kw_extended"].astype(str).str.lower().isin(["true", "1"])
-df = df[has_kw & (df["role"] != "委員長報告") & (~df["exclude"])].copy()
-print(f"対象: {len(df)}件")
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="サブ論点グループ別に段落数と政党別発言者数を集計するスクリプト"
+    )
+    parser.add_argument("--slug", required=True, help="分析対象のスラッグ (例: consumption-tax-issues)")
+    parser.add_argument(
+        "sub_json",
+        nargs="?",
+        default="data/issues/issue_A_sub.json",
+        help="サブ論点の定義JSONファイルパス (既定値: data/issues/issue_A_sub.json)",
+    )
+    args = parser.parse_args()
 
-rows = []
-for name, terms in groups.items():
-    hit = df["text"].apply(lambda s: any(t in s for t in terms))
-    sub = df[hit]
-    mem = sub[sub["role"] == "議員"]
-    top = mem["speaker"].value_counts()
-    party_n = mem.groupby("party")["speaker"].nunique().sort_values(ascending=False)
-    rows.append({
-        "サブ論点": name,
-        "段落": len(sub),
-        "議員段落": len(mem),
-        "政府段落": int((sub["role"] == "政府").sum()),
-        "議員の発言者": mem["speaker"].nunique(),
-        "議員の最多": top.index[0] if len(top) else "",
-        "最多の割合": round(top.iloc[0] / len(mem), 2) if len(mem) else 0,
-        "政党別の発言者数": " ".join(f"{p}{n}" for p, n in party_n.items()),
-    })
+    slug: str = args.slug
+    sub_json_arg: str = args.sub_json
+    p = paths(slug)
 
-res = pd.DataFrame(rows)
-OUT.parent.mkdir(exist_ok=True)
-res.to_csv(OUT, index=False, encoding="utf-8-sig")
-print(res.to_string(index=False))
-print(f"\n{OUT} に書き出しました")
+    sub_json_path = Path(sub_json_arg)
+    if not sub_json_path.is_absolute():
+        sub_json_path = BASE / sub_json_path
+
+    if not sub_json_path.exists():
+        raise FileNotFoundError(f"サブ論点ファイルが見つかりません: {sub_json_path}")
+
+    with sub_json_path.open("r", encoding="utf-8") as f:
+        groups = json.load(f)
+
+    in_path = p["interim"] / "paragraphs_clean.csv"
+    out_path = p["output"] / "issue_sub.csv"
+
+    if not in_path.exists():
+        raise FileNotFoundError(f"入力ファイルが見つかりません: {in_path}")
+
+    df = pd.read_csv(in_path)
+    df["exclude"] = df["exclude"].astype(str).str.lower().isin(["true", "1"])
+    df["text"] = df["text"].fillna("")
+    df["party"] = df["party"].fillna("")
+    has_kw = df["kw_extended"].astype(str).str.lower().isin(["true", "1"])
+    df = df[has_kw & (df["role"] != "委員長報告") & (~df["exclude"])].copy()
+    print(f"対象: {len(df)}件")
+
+    rows = []
+    for name, terms in groups.items():
+        hit = df["text"].apply(lambda s: any(t in s for t in terms))
+        sub = df[hit]
+        mem = sub[sub["role"] == "議員"]
+        top = mem["speaker"].value_counts()
+        party_n = mem.groupby("party")["speaker"].nunique().sort_values(ascending=False)
+        rows.append({
+            "サブ論点": name,
+            "段落": len(sub),
+            "議員段落": len(mem),
+            "政府段落": int((sub["role"] == "政府").sum()),
+            "議員の発言者": mem["speaker"].nunique(),
+            "議員の最多": top.index[0] if len(top) else "",
+            "最多の割合": round(top.iloc[0] / len(mem), 2) if len(mem) else 0,
+            "政党別の発言者数": " ".join(f"{p}{n}" for p, n in party_n.items()),
+        })
+
+    res = pd.DataFrame(rows)
+    p["output"].mkdir(parents=True, exist_ok=True)
+    res.to_csv(out_path, index=False, encoding="utf-8-sig")
+    print(res.to_string(index=False))
+    print(f"\n{out_path} に書き出しました")
+
+
+if __name__ == "__main__":
+    main()
