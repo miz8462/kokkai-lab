@@ -6,3 +6,4 @@ data/interim/
 .env
 .DS_Store
 output/
+drafts/
