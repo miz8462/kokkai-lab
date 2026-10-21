@@ -71,8 +71,11 @@ def main() -> None:
     p = paths(slug)
     raw_dir = p["raw"]
 
+    if "period_days" not in config:
+        raise KeyError(f"config に 'period_days' キーがありません: {config}")
+
     today = date.today()  # noqa: DTZ011
-    one_year_ago = today - timedelta(days=365)
+    one_year_ago = today - timedelta(days=config["period_days"])
 
     base_params = {
         "any": config["keyword"],

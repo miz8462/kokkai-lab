@@ -7,5 +7,6 @@
     "給付付き税額控除"
   ],
   "meeting": "本会議",
-  "period": "直近1年"
+  "period": "直近1年",
+  "period_days": 365
 }
