@@ -8,12 +8,12 @@
       "member": {
         "speakers": 10,
         "paragraphs": 16,
-        "top_speaker": "神谷宗幣",
+        "top_speaker": "石垣のりこ",
         "top_share": 0.19,
         "parties": {
           "参政党": 4,
-          "立憲民主党": 2,
           "日本共産党": 2,
+          "立憲民主党": 2,
           "れいわ新選組": 1,
           "国民民主党": 1
         },
@@ -100,7 +100,7 @@
       "member": {
         "speakers": 23,
         "paragraphs": 37,
-        "top_speaker": "安藤裕",
+        "top_speaker": "中司宏",
         "top_share": 0.08,
         "parties": {
           "国民民主党": 6,
@@ -109,8 +109,8 @@
           "れいわ新選組": 2,
           "立憲民主党": 2,
           "自由民主党": 2,
-          "公明党": 1,
           "チームみらい": 1,
+          "公明党": 1,
           "日本維新の会": 1
         },
         "party_speakers": {
@@ -168,7 +168,7 @@
       "member": {
         "speakers": 15,
         "paragraphs": 23,
-        "top_speaker": "安藤裕",
+        "top_speaker": "塩入清香",
         "top_share": 0.13,
         "parties": {
           "参政党": 5,
@@ -222,7 +222,7 @@
       "member": {
         "speakers": 9,
         "paragraphs": 13,
-        "top_speaker": "玉木雄一郎",
+        "top_speaker": "山本太郎",
         "top_share": 0.15,
         "parties": {
           "れいわ新選組": 2,
@@ -264,13 +264,13 @@
       "member": {
         "speakers": 10,
         "paragraphs": 13,
-        "top_speaker": "田中健",
+        "top_speaker": "山本太郎",
         "top_share": 0.15,
         "parties": {
           "国民民主党": 4,
           "参政党": 2,
-          "公明党": 1,
           "れいわ新選組": 1,
+          "公明党": 1,
           "日本共産党": 1,
           "立憲民主党": 1
         },
@@ -397,7 +397,7 @@
       "member": {
         "speakers": 2,
         "paragraphs": 2,
-        "top_speaker": "神谷裕",
+        "top_speaker": "玉木雄一郎",
         "top_share": 0.5,
         "parties": {
           "中道改革連合": 1,
@@ -427,15 +427,15 @@
         "top_share": 0.2,
         "parties": {
           "立憲民主党": 5,
-          "国民民主党": 4,
           "参政党": 4,
+          "国民民主党": 4,
           "公明党": 2,
           "自由民主党": 2,
           "れいわ新選組": 1,
           "チームみらい": 1,
           "中道改革連合": 1,
-          "日本維新の会": 1,
-          "日本共産党": 1
+          "日本共産党": 1,
+          "日本維新の会": 1
         },
         "party_speakers": {
           "れいわ新選組": [
@@ -555,15 +555,15 @@
       "member": {
         "speakers": 12,
         "paragraphs": 16,
-        "top_speaker": "田中健",
+        "top_speaker": "玉木雄一郎",
         "top_share": 0.12,
         "parties": {
           "国民民主党": 3,
           "れいわ新選組": 2,
           "立憲民主党": 2,
           "チームみらい": 1,
-          "公明党": 1,
           "中道改革連合": 1,
+          "公明党": 1,
           "参政党": 1,
           "日本維新の会": 1
         },
@@ -609,7 +609,7 @@
       "member": {
         "speakers": 8,
         "paragraphs": 12,
-        "top_speaker": "安藤裕",
+        "top_speaker": "和田政宗",
         "top_share": 0.17,
         "parties": {
           "参政党": 4,

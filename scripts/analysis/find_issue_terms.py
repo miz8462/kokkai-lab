@@ -106,7 +106,7 @@ def main() -> None:
             "example": ex[max(0, i - 25): i + 25].replace("\n", " "),
         })
 
-    res = pd.DataFrame(rows).sort_values("score", ascending=False)
+    res = pd.DataFrame(rows).sort_values(["score", "term"], ascending=[False, True])
     p["output"].mkdir(parents=True, exist_ok=True)
     res.to_csv(out_path, index=False)
     print(f"対象段落 {nt} / 基準段落 {nr}")
