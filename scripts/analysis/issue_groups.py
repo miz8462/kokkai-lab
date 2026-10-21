@@ -68,26 +68,20 @@ def main() -> None:
         mem = sub[sub["role"] == "議員"]
         top = mem[SPEAKER_COL].value_counts()
         # 同点の場合は発言者名で昇順に固定
-        top = top.sort_values(ascending=False)
-        top = top.reset_index()
-        top.columns = ["speaker", "count"]
-        top = top.sort_values(["count", "speaker"], ascending=[False, True])
-        top_dict = dict(zip(top["speaker"], top["count"]))
-        by_party_series = mem.groupby(PARTY_COL)[SPEAKER_COL].nunique()
-        by_party = by_party_series.sort_values(ascending=False)
+        top = top.sort_index()
+        top = top.sort_values(ascending=False, kind="stable")
+        by_party = mem.groupby(PARTY_COL)[SPEAKER_COL].nunique()
         # 同点の場合は政党名で昇順に固定
-        by_party = by_party.reset_index()
-        by_party.columns = ["party", "count"]
-        by_party = by_party.sort_values(["count", "party"], ascending=[False, True])
-        by_party = dict(zip(by_party["party"], by_party["count"]))
+        by_party = by_party.sort_index()
+        by_party = by_party.sort_values(ascending=False, kind="stable")
         rows.append({
             "論点": name,
             "段落": len(sub),
             "議員段落": len(mem),
             "政府段落": int((sub["role"] == "政府").sum()),
             "議員の発言者": mem[SPEAKER_COL].nunique(),
-            "議員の最多": next(iter(top_dict.keys())) if top_dict else "",
-            "最多の割合": round(next(iter(top_dict.values())) / len(mem), 2) if top_dict else 0,
+            "議員の最多": top.index[0] if len(top) > 0 else "",
+            "最多の割合": round(top.iloc[0] / len(mem), 2) if len(top) > 0 else 0,
             "政党別の発言者数": " ".join(f"{p}{n}" for p, n in by_party.items()),
         })
 
